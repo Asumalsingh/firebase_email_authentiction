@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_email_authentiction/pages/login.dart';
+import 'package:firebase_email_authentiction/pages/welcome.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -17,11 +18,11 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "firebase login demo",
+      title: "firebase login/signup using email",
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: WelcomePage(),
     );
   }
 }

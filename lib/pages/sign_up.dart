@@ -1,20 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_email_authentiction/pages/home.dart';
+import 'package:firebase_email_authentiction/pages/login.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   late String _email, _password;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("login page"),
+        title: Text("Sign_up page"),
       ),
       body: Form(
         //todo implement key
@@ -26,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10)),
 
             //todo implement field
+
             TextFormField(
               validator: (input) {
                 if (input!.isEmpty) {
@@ -50,9 +54,9 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
-              onPressed: signIn,
+              onPressed: signUp,
               child: Text(
-                'login',
+                'sign_up',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),
@@ -62,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<void> signIn() async {
+  Future<void> signUp() async {
     //todo validate fields
     final FormState = _formKey.currentState;
     if (FormState!.validate()) {
@@ -70,15 +74,14 @@ class _LoginPageState extends State<LoginPage> {
       FormState.save();
       try {
         UserCredential user = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: _email, password: _password);
+            .createUserWithEmailAndPassword(email: _email, password: _password);
 
+        await user.user!.sendEmailVerification();
+
+        Navigator.of(context).pop();
         //todo Navigate to home
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomePage(
-                      user: user,
-                    )));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       } catch (e) {
         print(e);
       }
