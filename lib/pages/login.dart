@@ -74,7 +74,11 @@ class _LoginPageState extends State<LoginPage> {
 
         //todo Navigate to home
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomePage(
+                      user: user,
+                    )));
       } catch (e) {
         print(e);
       }
